@@ -12,6 +12,7 @@ import ru.skypro.homework_avito_backend.mapper.UserMapper;
 import ru.skypro.homework_avito_backend.repository.UserRepository;
 import ru.skypro.homework_avito_backend.service.UserService;
 
+import java.util.NoSuchElementException;
 import java.util.UUID;
 
 @Service
@@ -27,7 +28,7 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public boolean setPassword(NewPasswordDto newPasswordDto, String username) {
         User user = userRepository.findByEmail(username)
-                .orElseThrow(() -> new IllegalArgumentException("Пользователь не найден: " + username));
+                .orElseThrow(() -> new NoSuchElementException("Пользователь не найден: " + username));
 
         if (!passwordEncoder.matches(newPasswordDto.getCurrentPassword(), user.getPassword())) {
             return false;
@@ -42,14 +43,14 @@ public class UserServiceImpl implements UserService {
     public UserDto getUser(String username) {
         return userRepository.findByEmail(username)
                 .map(userMapper::toDto)
-                .orElseThrow(() -> new IllegalArgumentException("Пользователь не найден: " + username));
+                .orElseThrow(() -> new NoSuchElementException("Пользователь не найден: " + username));
     }
 
     @Override
     @Transactional
     public UserDto updateUser(UserDto userDto, String username) {
         User user = userRepository.findByEmail(username)
-                .orElseThrow(() -> new IllegalArgumentException("Пользователь не найден: " + username));
+                .orElseThrow(() -> new NoSuchElementException("Пользователь не найден: " + username));
 
         user.setFirstName(userDto.getFirstName());
         user.setLastName(userDto.getLastName());
@@ -63,7 +64,7 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public void updateUserImage(MultipartFile image, String username) {
         User user = userRepository.findByEmail(username)
-                .orElseThrow(() -> new IllegalArgumentException("Пользователь не найден: " + username));
+                .orElseThrow(() -> new NoSuchElementException("Пользователь не найден: " + username));
 
         String uniqueFileName = UUID.randomUUID() + "_" + image.getOriginalFilename();
         String imagePath = "/users/me/image/" + uniqueFileName;

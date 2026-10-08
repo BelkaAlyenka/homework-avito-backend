@@ -16,6 +16,7 @@ import ru.skypro.homework_avito_backend.repository.UserRepository;
 import ru.skypro.homework_avito_backend.service.AdService;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -102,7 +103,7 @@ public class AdServiceImpl implements AdService {
     @Transactional
     public String updateImage(Integer id, MultipartFile image, String username) {
         Ad ad = adRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Объявление не найдено с id: " + id));
+                .orElseThrow(() -> new NoSuchElementException("Объявление не найдено с id: " + id));
 
         String uniqueFileName = UUID.randomUUID() + "_" + image.getOriginalFilename();
         String newImagePath = "/ads/image/" + uniqueFileName;

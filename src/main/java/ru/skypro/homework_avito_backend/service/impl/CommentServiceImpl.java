@@ -16,6 +16,7 @@ import ru.skypro.homework_avito_backend.repository.UserRepository;
 import ru.skypro.homework_avito_backend.service.CommentService;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
 @Service
@@ -44,10 +45,10 @@ public class CommentServiceImpl implements CommentService {
     @Transactional
     public CommentDto addComment(Integer adId, CreateOrUpdateCommentDto text, String username) {
         Ad ad = adRepository.findById(adId)
-                .orElseThrow(() -> new IllegalArgumentException("Объявление не найдено с id: " + adId));
+                .orElseThrow(() -> new NoSuchElementException("Объявление не найдено с id: " + adId));
 
         User author = userRepository.findByEmail(username)
-                .orElseThrow(() -> new IllegalArgumentException("Пользователь не найден: " + username));
+                .orElseThrow(() -> new NoSuchElementException("Пользователь не найден: " + username));
 
         Comment comment = commentMapper.toEntity(text);
         comment.setAd(ad);
@@ -62,7 +63,7 @@ public class CommentServiceImpl implements CommentService {
     @Transactional
     public void deleteComment(Integer adId, Integer commentId, String username) {
         Comment comment = commentRepository.findById(commentId)
-                .orElseThrow(() -> new IllegalArgumentException("Комментарий не найден с id: " + commentId));
+                .orElseThrow(() -> new NoSuchElementException("Комментарий не найден с id: " + commentId));
 
         commentRepository.delete(comment);
     }
@@ -71,7 +72,7 @@ public class CommentServiceImpl implements CommentService {
     @Transactional
     public CommentDto updateComment(Integer adId, Integer commentId, CreateOrUpdateCommentDto text, String username) {
         Comment comment = commentRepository.findById(commentId)
-                .orElseThrow(() -> new IllegalArgumentException("Комментарий не найден с id: " + commentId));
+                .orElseThrow(() -> new NoSuchElementException("Комментарий не найден с id: " + commentId));
 
         comment.setText(text.getText());
         Comment updatedComment = commentRepository.save(comment);

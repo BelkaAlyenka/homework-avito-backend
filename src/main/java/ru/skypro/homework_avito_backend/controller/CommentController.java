@@ -6,12 +6,13 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import ru.skypro.homework_avito_backend.dto.CommentDto;
 import ru.skypro.homework_avito_backend.dto.CommentsDto;
 import ru.skypro.homework_avito_backend.dto.CreateOrUpdateCommentDto;
-
-import java.util.Collections;
+import ru.skypro.homework_avito_backend.service.CommentService;
 
 @RestController
 @RequestMapping("/ads")
@@ -20,42 +21,42 @@ import java.util.Collections;
 @Tag(name = "Комментарии", description = "Управление комментариями под объявлениями")
 public class CommentController {
 
-    private static final Integer DEFAULT_COMMENT_ID = 1;
-    private static final Integer EMPTY_COUNT = 0;
+    private final CommentService commentService;
 
     @GetMapping("/{id}/comments")
     @Operation(summary = "Получение комментариев объявления")
     public ResponseEntity<CommentsDto> getComments(@PathVariable("id") Integer adId) {
-        CommentsDto comments = new CommentsDto();
-        comments.setCount(EMPTY_COUNT);
-        comments.setResults(Collections.emptyList());
-        return ResponseEntity.ok(comments);
+        return ResponseEntity.ok(commentService.getComments(adId));
     }
 
     @PostMapping("/{id}/comments")
     @Operation(summary = "Добавление комментария к объявлению")
     public ResponseEntity<CommentDto> addComment(@PathVariable("id") Integer adId,
-                                                 @RequestBody CreateOrUpdateCommentDto text) {
-        CommentDto createdComment = new CommentDto();
-        createdComment.setPk(DEFAULT_COMMENT_ID);
-        return ResponseEntity.status(HttpStatus.CREATED).body(createdComment);
+                                                 @RequestBody CreateOrUpdateCommentDto text,
+                                                 Authentication authentication) {
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(commentService.addComment(adId, text, authentication.getName()));
     }
 
     @DeleteMapping("/{adId}/comments/{commentId}")
     @Operation(summary = "Удаление комментария")
     @ApiResponse(responseCode = "204", description = "No Content")
-    public ResponseEntity<Void> deleteComment(@PathVariable Integer adId,
-                                              @PathVariable Integer commentId) {
+    @PreAuthorize("@adSecurity.isCommentOwnerOrAdmin(#commentId, authentication)")
+    public ResponseEntity<Void> deleteComment(@PathVariable("adId") Integer adId,
+                                              @PathVariable("commentId") Integer commentId,
+                                              Authentication authentication) {
+        commentService.deleteComment(adId, commentId, authentication.getName());
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
     @PatchMapping("/{adId}/comments/{commentId}")
     @Operation(summary = "Обновление комментария")
-    public ResponseEntity<CommentDto> updateComment(@PathVariable Integer adId,
-                                                    @PathVariable Integer commentId,
-                                                    @RequestBody CreateOrUpdateCommentDto text) {
-        CommentDto updatedComment = new CommentDto();
-        updatedComment.setPk(commentId);
-        return ResponseEntity.ok(updatedComment);
+    @PreAuthorize("@adSecurity.isCommentOwnerOrAdmin(#commentId, authentication)")
+    public ResponseEntity<CommentDto> updateComment(@PathVariable("adId") Integer adId,
+                                                    @PathVariable("commentId") Integer commentId,
+                                                    @RequestBody CreateOrUpdateCommentDto text,
+                                                    Authentication authentication) {
+        return ResponseEntity.ok(commentService.updateComment(adId, commentId, text, authentication.getName()));
     }
 }
+
