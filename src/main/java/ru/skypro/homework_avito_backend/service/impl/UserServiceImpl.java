@@ -10,10 +10,10 @@ import ru.skypro.homework_avito_backend.dto.UserDto;
 import ru.skypro.homework_avito_backend.model.User;
 import ru.skypro.homework_avito_backend.mapper.UserMapper;
 import ru.skypro.homework_avito_backend.repository.UserRepository;
+import ru.skypro.homework_avito_backend.service.ImageService;
 import ru.skypro.homework_avito_backend.service.UserService;
 
 import java.util.NoSuchElementException;
-import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -23,6 +23,7 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final UserMapper userMapper;
     private final PasswordEncoder passwordEncoder;
+    private final ImageService imageService;
 
     @Override
     @Transactional
@@ -66,11 +67,17 @@ public class UserServiceImpl implements UserService {
         User user = userRepository.findByEmail(username)
                 .orElseThrow(() -> new NoSuchElementException("Пользователь не найден: " + username));
 
-        String uniqueFileName = UUID.randomUUID() + "_" + image.getOriginalFilename();
+        String oldAvatarPath = user.getImage();
+
+        String uniqueFileName = imageService.uploadImage(image, "users");
         String imagePath = "/users/me/image/" + uniqueFileName;
 
         user.setImage(imagePath);
         userRepository.save(user);
+
+        if (oldAvatarPath != null) {
+            imageService.deleteImage(oldAvatarPath);
+        }
     }
 }
 

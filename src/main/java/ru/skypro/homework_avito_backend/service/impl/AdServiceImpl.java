@@ -14,10 +14,10 @@ import ru.skypro.homework_avito_backend.model.User;
 import ru.skypro.homework_avito_backend.repository.AdRepository;
 import ru.skypro.homework_avito_backend.repository.UserRepository;
 import ru.skypro.homework_avito_backend.service.AdService;
+import ru.skypro.homework_avito_backend.service.ImageService;
 
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -28,6 +28,7 @@ public class AdServiceImpl implements AdService {
     private final AdRepository adRepository;
     private final UserRepository userRepository;
     private final AdMapper adMapper;
+    private final ImageService imageService;
 
     @Override
     public AdsDto getAllAds() {
@@ -50,7 +51,8 @@ public class AdServiceImpl implements AdService {
         Ad ad = adMapper.toEntity(properties);
         ad.setAuthor(author);
 
-        String uniqueFileName = UUID.randomUUID() + "_" + image.getOriginalFilename();
+        String uniqueFileName = imageService.uploadImage(image, "ads");
+
         ad.setImage("/ads/image/" + uniqueFileName);
 
         Ad savedAd = adRepository.save(ad);
@@ -105,11 +107,17 @@ public class AdServiceImpl implements AdService {
         Ad ad = adRepository.findById(id)
                 .orElseThrow(() -> new NoSuchElementException("Объявление не найдено с id: " + id));
 
-        String uniqueFileName = UUID.randomUUID() + "_" + image.getOriginalFilename();
+        String oldImagePath = ad.getImage();
+
+        String uniqueFileName = imageService.uploadImage(image, "ads");
         String newImagePath = "/ads/image/" + uniqueFileName;
 
         ad.setImage(newImagePath);
         adRepository.save(ad);
+
+        if (oldImagePath != null) {
+            imageService.deleteImage(oldImagePath);
+        }
 
         return newImagePath;
     }

@@ -57,5 +57,30 @@ public class ImageServiceImpl implements ImageService {
         }
         return fileName.substring(lastIndexOfDot).toLowerCase();
     }
+
+    @Override
+    public void deleteImage(String imageRelativePath) {
+        if (!org.springframework.util.StringUtils.hasText(imageRelativePath)) {
+            return;
+        }
+
+        try {
+            String folderPrefix = imageRelativePath.contains("/ads/") ? "ads" : "users";
+
+            int lastSlashIndex = imageRelativePath.lastIndexOf("/");
+            if (lastSlashIndex == -1) {
+                return;
+            }
+            String fileName = imageRelativePath.substring(lastSlashIndex + 1);
+
+            java.nio.file.Path filePath = java.nio.file.Paths.get(baseImagesDir, folderPrefix, fileName)
+                    .toAbsolutePath().normalize();
+
+            java.nio.file.Files.deleteIfExists(filePath);
+
+        } catch (java.io.IOException e) {
+            throw new RuntimeException("Не удалось удалить старую картинку с диска: " + imageRelativePath, e);
+        }
+    }
 }
 
