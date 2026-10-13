@@ -27,8 +27,11 @@ public class WebSecurityConfig {
             "/v3/api-docs",
             "/webjars/**",
             "/login",
-            "/register"
+            "/register",
+            "/ads/image/**",
+            "/users/me/image/**"
     };
+
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
