@@ -15,6 +15,11 @@ import ru.skypro.homework_avito_backend.service.UserService;
 
 import java.util.NoSuchElementException;
 
+/**
+ * Реализация сервиса управления профилями пользователей.
+ * Использует {@link org.springframework.security.crypto.password.PasswordEncoder}
+ * для безопасной работы с паролями.
+ */
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)

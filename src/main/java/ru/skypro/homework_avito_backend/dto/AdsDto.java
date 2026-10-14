@@ -4,6 +4,9 @@ import lombok.Data;
 
 import java.util.List;
 
+/**
+ * DTO для передачи краткой информации об объявлении в списках.
+ */
 @Data
 public class AdsDto {
     private Integer count;

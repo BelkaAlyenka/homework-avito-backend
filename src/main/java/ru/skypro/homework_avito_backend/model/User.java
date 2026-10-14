@@ -7,6 +7,9 @@ import lombok.NoArgsConstructor;
 
 import java.util.List;
 
+/**
+ * JPA-сущность, представляющая пользователя системы.
+ */
 @Entity
 @Table(name = "users")
 @Getter

@@ -3,6 +3,9 @@ package ru.skypro.homework_avito_backend.dto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
+/**
+ * DTO для создания или обновления объявления (заголовок, цена, описание).
+ */
 @Data
 @Schema(description = "Данные для создания или обновления объявления")
 public class CreateOrUpdateAdDto {

@@ -3,6 +3,9 @@ package ru.skypro.homework_avito_backend.dto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
+/**
+ * DTO для передачи краткой информации об объявлении в списках.
+ */
 @Data
 @Schema(description = "Информация об объявлении")
 public class AdDto {

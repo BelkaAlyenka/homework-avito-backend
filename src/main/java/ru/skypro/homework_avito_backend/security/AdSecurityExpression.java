@@ -12,6 +12,14 @@ import ru.skypro.homework_avito_backend.repository.CommentRepository;
 
 import java.util.Objects;
 
+/**
+ * Компонент с кастомными выражениями безопасности для проверки прав доступа.
+ * Используется в аннотациях {@code @PreAuthorize} контроллеров через SpEL-выражения
+ * (например, {@code @adSecurity.isAdOwnerOrAdmin(#id, authentication)}).
+ * <p>
+ * Предоставляет методы для проверки, является ли текущий пользователь
+ * автором сущности (объявления или комментария) или администратором.
+ */
 @Component("adSecurity")
 @RequiredArgsConstructor
 public class AdSecurityExpression {
@@ -19,6 +27,16 @@ public class AdSecurityExpression {
     private final AdRepository adRepository;
     private final CommentRepository commentRepository;
 
+    /**
+     * Проверяет, имеет ли пользователь право на управление объявлением.
+     * Доступ разрешен, если пользователь является администратором (роль ADMIN)
+     * или автором объявления.
+     *
+     * @param adId           уникальный идентификатор объявления
+     * @param authentication объект аутентификации текущего пользователя
+     * @return {@code true}, если пользователь является автором объявления или администратором;
+     * {@code false} в противном случае
+     */
     @Transactional(readOnly = true)
     public boolean isAdOwnerOrAdmin(Integer adId, Authentication authentication) {
         if (authentication == null || !authentication.isAuthenticated()) {
@@ -37,6 +55,16 @@ public class AdSecurityExpression {
                 .orElse(false);
     }
 
+    /**
+     * Проверяет, имеет ли пользователь право на управление комментарием.
+     * Доступ разрешен, если пользователь является администратором (роль ADMIN)
+     * или автором комментария.
+     *
+     * @param commentId      уникальный идентификатор комментария
+     * @param authentication объект аутентификации текущего пользователя
+     * @return {@code true}, если пользователь является автором комментария или администратором;
+     * {@code false} в противном случае
+     */
     @Transactional(readOnly = true)
     public boolean isCommentOwnerOrAdmin(Integer commentId, Authentication authentication) {
         if (authentication == null || !authentication.isAuthenticated()) {

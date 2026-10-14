@@ -12,6 +12,12 @@ import ru.skypro.homework_avito_backend.mapper.UserMapper;
 import ru.skypro.homework_avito_backend.repository.UserRepository;
 import ru.skypro.homework_avito_backend.service.AuthService;
 
+/**
+ * Реализация сервиса аутентификации и регистрации.
+ * Использует {@link org.springframework.security.crypto.password.PasswordEncoder}
+ * для безопасного хранения паролей и {@link org.springframework.security.authentication.AuthenticationManager}
+ * для выполнения процесса аутентификации.
+ */
 @Service
 @RequiredArgsConstructor
 public class AuthServiceImpl implements AuthService {

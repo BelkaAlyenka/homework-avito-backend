@@ -12,6 +12,11 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.UUID;
 
+/**
+ * Реализация сервиса работы с изображениями.
+ * Сохраняет файлы в директории, указанной в свойстве {@code app.images.dir}.
+ * Использует UUID для генерации уникальных имен файлов и проверяет пути на безопасность.
+ */
 @Service
 public class ImageServiceImpl implements ImageService {
 

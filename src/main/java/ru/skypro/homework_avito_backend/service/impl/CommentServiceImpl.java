@@ -19,6 +19,10 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
+/**
+ * Реализация сервиса управления комментариями.
+ * Содержит бизнес-логику CRUD-операций над комментариями.
+ */
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)

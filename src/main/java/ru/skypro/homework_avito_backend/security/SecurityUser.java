@@ -8,6 +8,14 @@ import ru.skypro.homework_avito_backend.model.User;
 import java.util.Collection;
 import java.util.Collections;
 
+/**
+ * Адаптер сущности {@link User} к интерфейсу {@link UserDetails} Spring Security.
+ * Обеспечивает интеграцию пользовательских данных из базы данных с механизмами
+ * аутентификации и авторизации Spring Security.
+ * <p>
+ * Роль пользователя преобразуется в формат {@code ROLE_<ROLE>} (например, {@code ROLE_ADMIN}),
+ * а email используется в качестве username для аутентификации.
+ */
 public class SecurityUser implements UserDetails {
 
     private final User user;

@@ -16,6 +16,24 @@ import ru.skypro.homework_avito_backend.dto.UserDto;
 import ru.skypro.homework_avito_backend.service.AuthService;
 import ru.skypro.homework_avito_backend.service.UserService;
 
+/**
+ * REST-контроллер для управления пользователями и их аутентификации.
+ * <p>
+ * Предоставляет эндпоинты для:
+ * <ul>
+ *   <li>регистрации нового пользователя ({@code POST /register});</li>
+ *   <li>аутентификации пользователя ({@code POST /login}) через Basic Auth;</li>
+ *   <li>получения и обновления данных профиля текущего пользователя;</li>
+ *   <li>смены пароля с проверкой текущего пароля;</li>
+ *   <li>загрузки и обновления аватара пользователя.</li>
+ * </ul>
+ * <p>
+ * Делегирует бизнес-логику сервисам {@link AuthService} (аутентификация)
+ * и {@link UserService} (управление профилем).
+ *
+ * @see AuthService
+ * @see UserService
+ */
 @RestController
 @CrossOrigin(origins = "http://localhost:3000")
 @RequiredArgsConstructor

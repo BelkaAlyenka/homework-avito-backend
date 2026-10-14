@@ -20,6 +20,10 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
+/**
+ * Реализация сервиса управления объявлениями.
+ * Содержит бизнес-логику CRUD-операций над объявлениями и работу с их изображениями.
+ */
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)

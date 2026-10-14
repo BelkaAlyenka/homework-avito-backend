@@ -15,6 +15,21 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+/**
+ * REST-контроллер для раздачи статических файлов изображений.
+ * <p>
+ * Предоставляет эндпоинты для получения:
+ * <ul>
+ *   <li>изображений объявлений ({@code GET /ads/image/{fileName}});</li>
+ *   <li>аватаров пользователей ({@code GET /users/me/image/{fileName}}).</li>
+ * </ul>
+ * <p>
+ * Эндпоинты доступны без аутентификации (добавлены в белый список в {@code WebSecurityConfig}).
+ * Контроллер защищен от атак Path Traversal: проверяется, что итоговый путь находится
+ * внутри базовой директории изображений.
+ * <p>
+ * MIME-тип определяется автоматически через {@link Files#probeContentType(Path)}.
+ */
 @RestController
 @CrossOrigin(origins = "http://localhost:3000")
 @Tag(name = "Изображения", description = "Раздача статических файлов изображений с сервера")

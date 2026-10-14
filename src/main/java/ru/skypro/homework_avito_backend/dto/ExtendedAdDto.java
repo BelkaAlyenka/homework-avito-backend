@@ -3,6 +3,9 @@ package ru.skypro.homework_avito_backend.dto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
+/**
+ * DTO для передачи расширенной информации об объявлении с данными автора.
+ */
 @Data
 @Schema(description = "Расширенная информация об объявлении")
 public class ExtendedAdDto {

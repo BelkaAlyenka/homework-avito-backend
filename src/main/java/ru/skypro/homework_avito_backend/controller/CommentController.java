@@ -14,6 +14,22 @@ import ru.skypro.homework_avito_backend.dto.CommentsDto;
 import ru.skypro.homework_avito_backend.dto.CreateOrUpdateCommentDto;
 import ru.skypro.homework_avito_backend.service.CommentService;
 
+/**
+ * REST-контроллер для управления комментариями к объявлениям.
+ * <p>
+ * Предоставляет эндпоинты для:
+ * <ul>
+ *   <li>получения списка комментариев к объявлению;</li>
+ *   <li>создания нового комментария (доступно авторизованным пользователям);</li>
+ *   <li>обновления и удаления комментариев (доступно только автору комментария или администратору).</li>
+ * </ul>
+ * <p>
+ * Методы изменения и удаления защищены аннотацией {@link PreAuthorize}
+ * с использованием кастомного выражения {@code @adSecurity.isCommentOwnerOrAdmin}.
+ * Делегирует бизнес-логику сервису {@link CommentService}.
+ *
+ * @see CommentService
+ */
 @RestController
 @RequestMapping("/ads")
 @CrossOrigin(origins = "http://localhost:3000")

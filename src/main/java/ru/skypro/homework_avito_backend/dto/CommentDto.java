@@ -3,6 +3,9 @@ package ru.skypro.homework_avito_backend.dto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
+/**
+ * DTO для передачи информации о комментарии с данными автора.
+ */
 @Data
 @Schema(description = "Информация о комментарии")
 public class CommentDto {

@@ -17,6 +17,23 @@ import ru.skypro.homework_avito_backend.dto.CreateOrUpdateAdDto;
 import ru.skypro.homework_avito_backend.dto.ExtendedAdDto;
 import ru.skypro.homework_avito_backend.service.AdService;
 
+/**
+ * REST-контроллер для управления объявлениями.
+ * <p>
+ * Предоставляет эндпоинты для:
+ * <ul>
+ *   <li>получения списка всех объявлений и деталей конкретного объявления (доступно всем);</li>
+ *   <li>создания, обновления и удаления объявлений (доступно только автору или администратору);</li>
+ *   <li>получения списка объявлений текущего пользователя;</li>
+ *   <li>обновления изображения объявления.</li>
+ * </ul>
+ * <p>
+ * Методы изменения и удаления защищены аннотацией {@link PreAuthorize}
+ * с использованием кастомного выражения {@code @adSecurity.isAdOwnerOrAdmin}.
+ * Делегирует бизнес-логику сервису {@link AdService}.
+ *
+ * @see AdService
+ */
 @RestController
 @RequestMapping("/ads")
 @CrossOrigin(origins = "http://localhost:3000")
