@@ -47,7 +47,7 @@ public class CommentController {
 
     @PostMapping("/{id}/comments")
     @Operation(summary = "Добавление комментария к объявлению")
-    @ApiResponse(responseCode = "201", description = "Комментарий успешно создан")  // <-- ДОБАВИТЬ ЭТО
+    @ApiResponse(responseCode = "201", description = "Комментарий успешно создан")
     public ResponseEntity<CommentDto> addComment(@PathVariable("id") Integer adId,
                                                  @RequestBody CreateOrUpdateCommentDto text,
                                                  Authentication authentication) {
