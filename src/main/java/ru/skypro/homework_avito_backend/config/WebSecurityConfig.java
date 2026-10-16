@@ -40,9 +40,10 @@ public class WebSecurityConfig {
      * Включает ресурсы Swagger, эндпоинты логина/регистрации и пути для загрузки изображений.
      */
     private static final String[] AUTH_WHITELIST = {
-            "/swagger-resources/**",
+            "/swagger-ui/**",
             "/swagger-ui.html",
-            "/v3/api-docs",
+            "/v3/api-docs/**",
+            "/swagger-resources/**",
             "/webjars/**",
             "/login",
             "/register",
