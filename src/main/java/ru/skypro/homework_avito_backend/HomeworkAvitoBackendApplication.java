@@ -6,8 +6,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class HomeworkAvitoBackendApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(HomeworkAvitoBackendApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(HomeworkAvitoBackendApplication.class, args);
+    }
 
 }
